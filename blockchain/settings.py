@@ -20,12 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vi4apxuk-b+kp_q79ul88fphkc76d$#7vtokh&en$y5a&pz&up'
+SECRET_KEY = os.environ['SECRET_KEY']
+print SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['35.198.253.250']
+ALLOWED_HOSTS = ['35.198.253.250', '127.0.0.1']
 
 
 # Application definition
@@ -37,6 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    ## Native
+    'blog',
+
+    ## 3rd party
+    'mediumeditor',
+    'ckeditor',
+    'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -54,7 +64,7 @@ ROOT_URLCONF = 'blockchain.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -67,6 +77,13 @@ TEMPLATES = [
     },
 ]
 
+
+DEFAULT_FILE_STORAGE = 'storages.backends.gs.GSBotoStorage'
+GS_ACCESS_KEY_ID = os.environ["GS_ACCESS_KEY_ID"]
+GS_SECRET_ACCESS_KEY = os.environ['GS_SECRET_ACCESS_KEY']
+GS_BUCKET_NAME = 'blogmedia'
+
+
 WSGI_APPLICATION = 'blockchain.wsgi.application'
 
 
@@ -75,7 +92,7 @@ WSGI_APPLICATION = 'blockchain.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'myblogdb',
         'USER': 'root',
         'PASSWORD': 'rtjzI5rPN1sKPxN4',
@@ -122,3 +139,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Add these new lines
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+
+

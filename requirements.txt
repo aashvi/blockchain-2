@@ -1,0 +1,8 @@
+django-gapc-storage
+boto3
+django-storages
+django-mediumeditor
+boto
+django
+django-ckeditor
+MySQL-python
